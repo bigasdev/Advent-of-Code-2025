@@ -16,10 +16,12 @@ public:
   void set_current_day(AdventsType day) { current_day = day; }
 
   // all the challenges
-  void advent_day_1(std::vector<std::string> input);
+  void advent_day_1_pt1(std::vector<std::string> input);
+  void advent_day_1_pt2(std::vector<std::string> input);
 
 private:
   AdventsType current_day = DAY_NONE;
 
-  std::string m_result = "";
+  std::string m_result_1 = "";
+  std::string m_result_2 = "";
 };

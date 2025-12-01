@@ -13,3 +13,5 @@ bool g_paused;
 bool g_is_dragging_files;
 
 float g_light_falloff;
+
+std::vector<std::string> g_dropped_filenames;

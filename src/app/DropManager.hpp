@@ -36,6 +36,7 @@ public:
     // do something useful to flag to our application that files have been
     // dragged from the OS into our application
     Logger::log("Drag Enter detected");
+    g_dropped_filenames.clear();
     g_is_dragging_files = true;
 
     // trigger MouseDown for button 1 within ImGui
@@ -80,6 +81,7 @@ public:
         UINT cch = DragQueryFile(hdrop, i, szFile, MAX_PATH);
         DragQueryFileA(hdrop, i, file_name, MAX_PATH);
         Logger::log("File dropped: " + std::string(file_name));
+        g_dropped_filenames.push_back(std::string(file_name));
         if (cch > 0 && cch < MAX_PATH) {
           // szFile contains the full path to the file, do something useful with
           // it i.e. add it to a vector or something

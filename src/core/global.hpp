@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <vector>
 #ifndef GLOBAL_HPP
 #define GLOBAL_HPP
 
@@ -20,5 +22,7 @@ extern bool g_left_click;
 extern bool g_controller_connected;
 extern bool g_paused;
 extern bool g_is_dragging_files;
+
+extern std::vector<std::string> g_dropped_filenames;
 
 #endif
