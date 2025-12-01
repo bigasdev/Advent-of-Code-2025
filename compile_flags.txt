@@ -1,0 +1,8 @@
+-Iinclude
+-Iinclude/SDL2
+-Isrc
+-Wall
+-Wextra
+-std=c++17
+--target=x86_64-w64-mingw32
+-D_DEBUG
