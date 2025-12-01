@@ -23,6 +23,7 @@
 
 // local vars
 std::unique_ptr<Advents> advents = std::make_unique<Advents>();
+HDROP hDrop = nullptr;
 
 App::App() {}
 
@@ -35,19 +36,6 @@ void App::fixed_update(double tmod) {}
 void App::update(double dt) {
 #if _DEBUG
 #endif
-  HDROP hDrop = nullptr;
-  if ((hDrop = (HDROP)SendMessage(g_engine->get_hwnd(), WM_DROPFILES, 0, 0)) !=
-      nullptr) {
-    UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
-    for (UINT i = 0; i < fileCount; ++i) {
-      char filePath[MAX_PATH];
-      if (DragQueryFile(hDrop, i, filePath, MAX_PATH)) {
-        // Process the file path as needed
-        printf("Dropped file: %s\n", filePath);
-      }
-    }
-    DragFinish(hDrop);
-  }
 }
 
 void App::post_update(double dt) {

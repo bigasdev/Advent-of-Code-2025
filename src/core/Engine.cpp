@@ -19,10 +19,12 @@
 #include "SDL2/SDL_video.h"
 #include "SoundManager.hpp"
 #include "Timer.hpp"
+#include "app/DropManager.hpp"
 #include "global.hpp"
 #include <SDL_syswm.h>
 #include <cassert>
 #include <iostream>
+#include <ole2.h>
 
 // init
 #ifndef WIN_WIDTH
@@ -114,6 +116,11 @@ void Engine::init() {
 
   TTF_Init();
 
+  OleInitialize(NULL);
+  DropManager dm;
+
+  RegisterDragDrop(m_sdl_hwnd, &dm);
+
   m_running = true;
 }
 
@@ -158,7 +165,7 @@ void Engine::load_step() {
     break;
   case LoadState::START_APP:
     // starting game
-    DragAcceptFiles(get_hwnd(), true);
+
     m_app = new App();
     m_app->init();
     Logger::log("Game initialized");
@@ -234,6 +241,7 @@ void Engine::post_update() {
     return;
   }
 
+  RevokeDragDrop(m_sdl_hwnd);
   m_app->post_update(Timer::get_dt());
 
 #if _DEBUG
@@ -280,9 +288,9 @@ rect.h, {col.r, col.g, col.b, col.a});
 
 void Engine::quit() {
   m_app->clean();
-  DragAcceptFiles(g_engine->get_hwnd(), false);
   // SDL_DestroyWindow(SDL_GetWindowFromID(GPU_GetInitWindow()));
   SDL_DestroyWindow(m_sdl_window);
+  OleUninitialize();
   SDL_Quit();
   Logger::log("SDL2 quit");
   Logger::write_to_file("log.txt");
