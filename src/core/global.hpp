@@ -19,5 +19,6 @@ extern TickManager *g_tick_manager;
 extern bool g_left_click;
 extern bool g_controller_connected;
 extern bool g_paused;
+extern bool g_is_dragging_files;
 
 #endif

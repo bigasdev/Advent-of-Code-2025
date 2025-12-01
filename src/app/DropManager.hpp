@@ -1,4 +1,7 @@
+#include "core/global.hpp"
+#include "tools/Logger.hpp"
 #include <oleidl.h>
+#include <string>
 
 // create a class inheriting from IDropTarget
 class DropManager : public IDropTarget {
@@ -32,6 +35,8 @@ public:
 
     // do something useful to flag to our application that files have been
     // dragged from the OS into our application
+    Logger::log("Drag Enter detected");
+    g_is_dragging_files = true;
 
     // trigger MouseDown for button 1 within ImGui
 
@@ -60,6 +65,8 @@ public:
     FORMATETC fmte = {CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
     STGMEDIUM stgm;
 
+    Logger::log("Drop detected");
+
     if (SUCCEEDED(pDataObj->GetData(&fmte, &stgm))) {
       HDROP hdrop =
           (HDROP)stgm.hGlobal; // or reinterpret_cast<HDROP> if preferred
@@ -69,18 +76,28 @@ public:
       // here
       for (UINT i = 0; i < file_count; i++) {
         TCHAR szFile[MAX_PATH];
+        char file_name[MAX_PATH];
         UINT cch = DragQueryFile(hdrop, i, szFile, MAX_PATH);
+        DragQueryFileA(hdrop, i, file_name, MAX_PATH);
+        Logger::log("File dropped: " + std::string(file_name));
         if (cch > 0 && cch < MAX_PATH) {
           // szFile contains the full path to the file, do something useful with
           // it i.e. add it to a vector or something
         }
       }
 
+      Logger::log("Files dropped:");
+      Logger::log("Number of files: " + std::to_string(file_count));
+      auto data = static_cast<HDROP>(stgm.hGlobal);
+      Logger::log("Handle: " +
+                  std::to_string(reinterpret_cast<uintptr_t>(data)));
+
       // we have to release the data when we're done with it
       ReleaseStgMedium(&stgm);
 
       // notify our application somehow that we've finished dragging the files
       // (provide the data somehow)
+      g_is_dragging_files = false;
     }
 
     // trigger MouseUp for button 1 within ImGui

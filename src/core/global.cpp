@@ -10,5 +10,6 @@ TickManager *g_tick_manager;
 bool g_left_click;
 bool g_controller_connected;
 bool g_paused;
+bool g_is_dragging_files;
 
 float g_light_falloff;

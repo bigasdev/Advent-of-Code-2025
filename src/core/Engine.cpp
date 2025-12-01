@@ -117,9 +117,9 @@ void Engine::init() {
   TTF_Init();
 
   OleInitialize(NULL);
-  DropManager dm;
 
-  RegisterDragDrop(m_sdl_hwnd, &dm);
+  m_drop_manager = std::make_unique<DropManager>();
+  RegisterDragDrop(m_sdl_hwnd, m_drop_manager.get());
 
   m_running = true;
 }
@@ -232,6 +232,12 @@ void Engine::update() {
     return;
   }
 
+  MSG message;
+  while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)) {
+    TranslateMessage(&message);
+    DispatchMessage(&message);
+  }
+
   g_input_manager->tick_update();
   m_app->update(Timer::get_dt());
 }
@@ -241,7 +247,6 @@ void Engine::post_update() {
     return;
   }
 
-  RevokeDragDrop(m_sdl_hwnd);
   m_app->post_update(Timer::get_dt());
 
 #if _DEBUG
@@ -290,7 +295,9 @@ void Engine::quit() {
   m_app->clean();
   // SDL_DestroyWindow(SDL_GetWindowFromID(GPU_GetInitWindow()));
   SDL_DestroyWindow(m_sdl_window);
+  Logger::log("SDL2 window destroyed");
   OleUninitialize();
+  RevokeDragDrop(m_sdl_hwnd);
   SDL_Quit();
   Logger::log("SDL2 quit");
   Logger::write_to_file("log.txt");

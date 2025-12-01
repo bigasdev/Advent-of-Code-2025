@@ -4,6 +4,7 @@ here we will instantiate and run everything
 **/
 
 #pragma once
+#include <memory>
 #include <windef.h>
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
@@ -15,6 +16,7 @@ class SDL_Window;
 class GPU_Target;
 class Profiler;
 class App;
+class DropManager;
 class Res;
 class InputManager;
 class SoundManager;
@@ -45,6 +47,7 @@ private:
   Res *m_res;
   InputManager *m_input_manager;
   SoundManager *m_sound_manager;
+  std::unique_ptr<DropManager> m_drop_manager;
 
   vec2 m_window_size;
 

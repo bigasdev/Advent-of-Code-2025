@@ -37,8 +37,8 @@ void loop() {
     engine->fixed_update();
   }
   engine->update();
-  engine->post_update();
   engine->draw();
+  engine->post_update();
 #endif
   engine->post_init();
 
