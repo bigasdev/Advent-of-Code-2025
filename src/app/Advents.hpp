@@ -1,6 +1,7 @@
 #pragma once
 
 enum AdventsType {
+  DAY_NONE,
   DAY_1,
   DAY_2,
 };
@@ -13,5 +14,5 @@ public:
   void set_current_day(AdventsType day) { current_day = day; }
 
 private:
-  AdventsType current_day = DAY_1;
+  AdventsType current_day = DAY_NONE;
 };

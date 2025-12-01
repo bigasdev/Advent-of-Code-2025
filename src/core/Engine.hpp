@@ -4,6 +4,7 @@ here we will instantiate and run everything
 **/
 
 #pragma once
+#include <windef.h>
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
@@ -37,6 +38,7 @@ private:
 
   SDL_Renderer *m_sdl_renderer;
   SDL_Window *m_sdl_window;
+  HWND m_sdl_hwnd;
   GPU_Target *m_gpu;
   App *m_app;
   Profiler *m_profiler;
@@ -64,6 +66,7 @@ public:
 
   // getters
   vec2 *get_window_size() { return &m_window_size; }
+  HWND get_hwnd() { return m_sdl_hwnd; }
 };
 
 #endif

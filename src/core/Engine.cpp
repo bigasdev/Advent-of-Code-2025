@@ -20,6 +20,7 @@
 #include "SoundManager.hpp"
 #include "Timer.hpp"
 #include "global.hpp"
+#include <SDL_syswm.h>
 #include <cassert>
 #include <iostream>
 
@@ -49,6 +50,9 @@ void Engine::init() {
   }
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
+  SDL_SysWMinfo wmInfo;
+  SDL_VERSION(&wmInfo.version);
+
   // get computer resolution
   SDL_DisplayMode DM;
   SDL_GetCurrentDisplayMode(0, &DM);
@@ -60,6 +64,9 @@ void Engine::init() {
                                   DM.h - (WIN_HEIGHT * 1.1f), WIN_WIDTH,
                                   WIN_HEIGHT, window_flags);
   m_window_size = {WIN_WIDTH, WIN_HEIGHT};
+
+  SDL_GetWindowWMInfo(m_sdl_window, &wmInfo);
+  m_sdl_hwnd = wmInfo.info.win.window;
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
@@ -151,6 +158,7 @@ void Engine::load_step() {
     break;
   case LoadState::START_APP:
     // starting game
+    DragAcceptFiles(get_hwnd(), true);
     m_app = new App();
     m_app->init();
     Logger::log("Game initialized");
@@ -272,6 +280,7 @@ rect.h, {col.r, col.g, col.b, col.a});
 
 void Engine::quit() {
   m_app->clean();
+  DragAcceptFiles(g_engine->get_hwnd(), false);
   // SDL_DestroyWindow(SDL_GetWindowFromID(GPU_GetInitWindow()));
   SDL_DestroyWindow(m_sdl_window);
   SDL_Quit();
