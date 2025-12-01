@@ -1,5 +1,0 @@
-Initializing SDL3...
-SDL3 init code: 1
-SDL3 window created
-Profiler initialized
-ERROR: Signal: 22
