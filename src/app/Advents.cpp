@@ -80,16 +80,44 @@ void Advents::advent_day_1_pt1(std::vector<std::string> input) {
 void Advents::advent_day_1_pt2(std::vector<std::string> input) {
 
   int dial = 50;
+  int dial_buffer = dial;
   int rotated_to_0 = 0;
 
   for (auto line : input) {
     char direction = line[0];
     int amount = std::stoi(line.substr(1));
+    dial_buffer = dial;
 
     if (direction == 'R') {
       dial = (dial + amount) % 100;
+      {
+        auto total = dial_buffer + amount;
+        if (total != 100) {
+
+          auto total_quo = total / 100;
+          Logger::log("Total: " + std::to_string(total));
+          Logger::log("Total quo: " + std::to_string(total_quo));
+          for (int i = 0; i < total_quo; i++) {
+            rotated_to_0++;
+          }
+        }
+      }
     } else {
       dial = ((dial - amount) % (100) + (100)) % (100);
+      if (dial_buffer != 0) {
+        Logger::log("Dial before subtraction: " + std::to_string(dial));
+        Logger::log("Amount to subtract: " + std::to_string(amount));
+        int total = dial_buffer - amount;
+        if (total < 0) {
+          rotated_to_0++;
+          int total_quo = Math::abs(total) / 100;
+          Logger::log("Total: " + std::to_string(total));
+          Logger::log("Total quo: " + std::to_string(total_quo));
+          for (int i = 0; i < total_quo; i++) {
+            rotated_to_0++;
+          }
+        }
+      }
     }
 
     if (dial == 0) {
