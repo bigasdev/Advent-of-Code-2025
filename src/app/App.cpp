@@ -70,7 +70,9 @@ void App::draw_ui() {
 
   if (ImGui::Button("Day 1")) {
     advents->set_current_day(DAY_1);
-    //
+  }
+  if (ImGui::Button("Day 2")) {
+    advents->set_current_day(DAY_2);
   }
   ImGui::End();
 

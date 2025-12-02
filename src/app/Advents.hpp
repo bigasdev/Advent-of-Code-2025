@@ -19,6 +19,9 @@ public:
   void advent_day_1_pt1(std::vector<std::string> input);
   void advent_day_1_pt2(std::vector<std::string> input);
 
+  void advent_day_2_pt1(std::string input);
+  void advent_day_2_pt2(std::string input);
+
 private:
   AdventsType current_day = DAY_NONE;
 
